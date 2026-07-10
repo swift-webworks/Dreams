@@ -28,7 +28,7 @@ def env_list(name, default=""):
 # ---------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-CHANGE-ME-IN-PRODUCTION")
 DEBUG = env_bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1")
+ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS","dreamstours.pythonanywhere.com", "localhost,127.0.0.1")
 
 SITE_URL = os.environ.get("SITE_URL", "https://www.dreamstourstravels.in")
 
