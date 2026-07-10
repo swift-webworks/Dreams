@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block structured_data %}
 {% block body_class %}home-hero-entrance{% endblock %}
+
+{% block structured_data %}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -11,12 +12,18 @@
     {
       "@type": "Question",
       "name": "Does Dreams Tours and Travels provide pickup outside Rameswaram?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes, we arrange pickups across Tamil Nadu including Madurai, Trichy, and Chennai on request."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, we arrange pickups across Tamil Nadu including Madurai, Trichy, and Chennai on request."
+      }
     },
     {
       "@type": "Question",
       "name": "What vehicles are available for family trips?",
-      "acceptedAnswer": {"@type": "Answer", "text": "We offer sedans, SUVs and tempo travellers in both budget-friendly and premium tiers to suit family and group sizes."}
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer sedans, SUVs and tempo travellers in both budget-friendly and premium tiers to suit family and group sizes."
+      }
     }
   ]
 }
