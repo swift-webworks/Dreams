@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block structured_data %}
+{% block body_class %}home-hero-entrance{% endblock %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Dreams Tours and Travels provide pickup outside Rameswaram?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes, we arrange pickups across Tamil Nadu including Madurai, Trichy, and Chennai on request."}
+    },
+    {
+      "@type": "Question",
+      "name": "What vehicles are available for family trips?",
+      "acceptedAnswer": {"@type": "Answer", "text": "We offer sedans, SUVs and tempo travellers in both budget-friendly and premium tiers to suit family and group sizes."}
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- ============ HERO ============ -->
+<section class="dt-hero">
+  {# Placeholder for background video — replace src when video asset is provided #}
+  <video class="dt-hero-media" autoplay muted loop playsinline poster="{% static 'img/hero-poster.jpg' %}">
+    <source src="{% static 'video/hero-placeholder.mp4' %}" type="video/mp4">
+  </video>
+  <div class="dt-hero-overlay"></div>
+
+  <div class="container dt-hero-content">
+    <div class="row">
+      <div class="col-lg-9">
+        <p class="dt-eyebrow" style="color:#fff;">Rameswaram · Tamil Nadu</p>
+        <h1 class="dt-hero-title">
+          Journeys Crafted for<br><em>Dreamers</em> &amp; Devotees
+        </h1>
+        <p class="dt-hero-sub">
+          Premium taxi and tour packages from Rameswaram — comfortable vehicles, professional drivers,
+          and unforgettable destinations across South India.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{% url 'core:contact' %}" class="btn dt-btn-primary btn-lg">Contact Us</a>
+          <a href="{% url 'core:destination_list' %}" class="btn dt-btn-light btn-lg">View Destinations</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dt-scroll-indicator">
+    Scroll
+    <div class="dt-mouse"></div>
+  </div>
+</section>
+
+<!-- ============ OUR FLEET PREVIEW ============ -->
+<section class="dt-section" id="fleet">
+  <div class="container">
+    <div class="row align-items-end mb-5">
+      <div class="col-lg-8" data-aos="fade-up">
+        <p class="dt-eyebrow">Our Fleet</p>
+        <h2 class="dt-section-title">Travel in Comfort, Every Time</h2>
+        <p class="dt-section-lede">From budget-friendly sedans to premium tempo travellers — choose the ride that fits your journey.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for vehicle in featured_vehicles %}
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+        <div class="dt-card">
+          <div class="dt-card-img-wrap">
+            {% if vehicle.image %}
+            <img src="{{ vehicle.image.url }}" alt="{{ vehicle.name }} — {{ vehicle.get_category_display }} available for hire in Rameswaram" loading="lazy" width="400" height="300">
+            {% else %}
+            <img src="{% static 'img/vehicle-placeholder.jpg' %}" alt="{{ vehicle.name }}" loading="lazy" width="400" height="300">
+            {% endif %}
+            <span class="dt-card-badge">{{ vehicle.get_tier_display }}</span>
+          </div>
+          <div class="dt-card-body">
+            <h3 class="h5 mb-1">{{ vehicle.name }}</h3>
+            <p class="text-muted small mb-2">{{ vehicle.get_category_display }} · {{ vehicle.seats }} Seater</p>
+            <p class="small mb-3">{{ vehicle.description }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="dt-price-tag">₹{{ vehicle.price_per_km }}<small class="fs-6 text-muted">/km</small></span>
+              <a href="{% url 'core:contact' %}" class="btn dt-btn-outline btn-sm">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted">Featured vehicles will appear here once added in the admin panel.</div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{% url 'core:fleet_list' %}" class="btn dt-btn-primary btn-lg">Explore Complete Fleet →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ POPULAR DESTINATIONS ============ -->
+<section class="dt-section dt-section-alt" id="destinations">
+  <div class="container">
+    <div class="row align-items-end mb-5">
+      <div class="col-lg-8" data-aos="fade-up">
+        <p class="dt-eyebrow">Destinations</p>
+        <h2 class="dt-section-title">Popular Destinations</h2>
+        <p class="dt-section-lede">Handpicked temples, beaches and hill stations — all just a comfortable drive away.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for destination in featured_destinations %}
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+        <div class="dt-card">
+          <div class="dt-card-img-wrap">
+            {% if destination.image %}
+            <img src="{{ destination.image.url }}" alt="{{ destination.name }} tour package from Rameswaram" loading="lazy" width="400" height="300">
+            {% else %}
+            <img src="{% static 'img/destination-placeholder.jpg' %}" alt="{{ destination.name }}" loading="lazy" width="400" height="300">
+            {% endif %}
+          </div>
+          <div class="dt-card-body">
+            <h3 class="h5 mb-1">{{ destination.name }}</h3>
+            <p class="text-muted small mb-2"><i class="bi bi-calendar-event" aria-hidden="true"></i> Best time: {{ destination.best_time }}</p>
+            <p class="small mb-3">{{ destination.description|truncatewords:16 }}</p>
+            <a href="{{ destination.get_absolute_url }}" class="btn dt-btn-outline btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted">Featured destinations will appear here once added in the admin panel.</div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{% url 'core:destination_list' %}" class="btn dt-btn-primary btn-lg">Explore All Destinations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OUR STORY ============ -->
+<section class="dt-section" id="our-story">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <p class="dt-eyebrow">Our Story</p>
+        <h2 class="dt-section-title">Trusted Across South India</h2>
+        <p class="dt-section-lede mb-4">
+          For over a decade, Dreams Tours and Travels has carried families, pilgrims and friends safely
+          to the places that matter most — with professional drivers and a promise of comfort at every kilometre.
+        </p>
+        <a href="{% url 'core:story' %}" class="btn dt-btn-primary">Read Our Story</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-6" data-aos="fade-up">
+            <div class="dt-stat-card">
+              <div class="dt-stat-number" data-counter-target="10" data-counter-suffix="+">0+</div>
+              <p class="small text-muted mb-0">Years Experience</p>
+            </div>
+          </div>
+          <div class="col-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="dt-stat-card">
+              <div class="dt-stat-number" data-counter-target="100" data-counter-suffix="%">0%</div>
+              <p class="small text-muted mb-0">Trusted Across South India</p>
+            </div>
+          </div>
+          <div class="col-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="dt-stat-card">
+              <i class="bi bi-person-badge fs-2" style="color:var(--dt-primary)" aria-hidden="true"></i>
+              <p class="small text-muted mb-0 mt-2">Professional Drivers</p>
+            </div>
+          </div>
+          <div class="col-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="dt-stat-card">
+              <i class="bi bi-shield-check fs-2" style="color:var(--dt-primary)" aria-hidden="true"></i>
+              <p class="small text-muted mb-0 mt-2">Safe Journey</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MEMORIES — infinite scrolling gallery ============ -->
+{% if memories %}
+<section class="dt-section dt-section-alt" id="memories">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Memories</p>
+      <h2 class="dt-section-title">Moments From The Road</h2>
+    </div>
+  </div>
+
+  <div class="dt-memories-track-wrap" data-aos="fade-up">
+    <div class="dt-memories-track">
+      {% for memory in memories %}
+      <div class="dt-memory-item">
+        <img src="{{ memory.image.url }}" alt="{{ memory.caption|default:'Travel memory with Dreams Tours and Travels' }}" loading="lazy" width="260" height="260">
+      </div>
+      {% endfor %}
+      {% for memory in memories %}
+      <div class="dt-memory-item" aria-hidden="true">
+        <img src="{{ memory.image.url }}" alt="" loading="lazy" width="260" height="260">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="container text-center mt-5">
+    <a href="{% url 'core:contact' %}" class="btn dt-btn-primary btn-lg">Plan Your Journey</a>
+  </div>
+</section>
+{% endif %}
+
+<!-- ============ CLIENT STORIES ============ -->
+{% if reviews %}
+<section class="dt-section" id="client-stories">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Client Stories</p>
+      <h2 class="dt-section-title">What Our Travellers Say</h2>
+    </div>
+    <div class="row g-4">
+      {% for review in reviews %}
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'100' }}">
+        <div class="dt-review-card">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            {% if review.reviewer_image %}
+            <img src="{{ review.reviewer_image.url }}" class="dt-review-avatar" alt="{{ review.reviewer_name }}" loading="lazy" width="52" height="52">
+            {% else %}
+            <div class="dt-review-avatar d-flex align-items-center justify-content-center" style="background:var(--dt-secondary); color:var(--dt-primary-dark); font-weight:700;">
+              {{ review.reviewer_name|first }}
+            </div>
+            {% endif %}
+            <div>
+              <h3 class="h6 mb-0">{{ review.reviewer_name }}</h3>
+              <span class="dt-stars small">{% for i in "12345" %}{% if forloop.counter <= review.rating %}★{% else %}☆{% endif %}{% endfor %}</span>
+            </div>
+          </div>
+          <p class="small mb-3">"{{ review.review_text|truncatewords:30 }}"</p>
+          {% if review.google_review_url %}
+          <a href="{{ review.google_review_url }}" target="_blank" rel="noopener" class="btn btn-sm dt-btn-outline">
+            <i class="bi bi-google" aria-hidden="true"></i> View on Google
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ============ CONTACT ============ -->
+<section class="dt-section dt-section-alt" id="contact">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <p class="dt-eyebrow">Contact</p>
+        <h2 class="dt-section-title">Plan Your Journey</h2>
+        <p class="dt-section-lede mb-4">Tell us where you'd like to go and we'll take care of the rest.</p>
+
+        {% include "core/_contact_form.html" with form=contact_form %}
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <div class="dt-contact-links mb-4">
+          <a href="tel:+91{{ COMPANY_PHONE }}"><i class="bi bi-telephone-fill" aria-hidden="true"></i> {{ COMPANY_PHONE_DISPLAY }}</a>
+          <a href="{{ COMPANY_WHATSAPP_LINK }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> Chat on WhatsApp</a>
+          <a href="mailto:{{ COMPANY_EMAIL }}"><i class="bi bi-envelope-fill" aria-hidden="true"></i> {{ COMPANY_EMAIL }}</a>
+        </div>
+        <div class="dt-map-frame">
+          <iframe src="{{ GOOGLE_MAP_EMBED }}" width="100%" height="320" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Dreams Tours and Travels location map"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

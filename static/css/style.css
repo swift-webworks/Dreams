@@ -1,0 +1,360 @@
+/* =========================================================================
+   Dreams Tours and Travels — Premium Luxury Design System
+   ========================================================================= */
+
+:root {
+  --dt-primary: #48624F;
+  --dt-primary-dark: #384D3E;
+  --dt-secondary: #A7B69D;
+  --dt-bg: #F4F1E8;
+  --dt-accent: #E6B89C;
+  --dt-ink: #2B2A26;
+  --dt-white: #FFFFFF;
+
+  --dt-font-heading: 'Cormorant Garamond', serif;
+  --dt-font-body: 'Manrope', sans-serif;
+
+  --dt-radius-sm: 10px;
+  --dt-radius-md: 18px;
+  --dt-radius-lg: 28px;
+
+  --dt-shadow-soft: 0 20px 45px -18px rgba(43, 42, 38, 0.22);
+  --dt-shadow-lift: 0 28px 60px -20px rgba(72, 98, 79, 0.35);
+
+  --dt-space-section: clamp(4rem, 8vw, 8rem);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--dt-font-body);
+  color: var(--dt-ink);
+  background: var(--dt-bg);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .dt-display {
+  font-family: var(--dt-font-heading);
+  font-weight: 600;
+  color: var(--dt-primary-dark);
+  letter-spacing: 0.2px;
+}
+
+.dt-eyebrow {
+  font-family: var(--dt-font-body);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--dt-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.dt-eyebrow::before {
+  content: "";
+  width: 34px;
+  height: 1.5px;
+  background: var(--dt-accent);
+  display: inline-block;
+}
+
+a { text-decoration: none; }
+
+.skip-link {
+  position: fixed; top: 0; left: 0; z-index: 2000;
+  background: var(--dt-primary); color: #fff; padding: 10px 16px;
+}
+
+/* ============ Buttons ============ */
+.btn {
+  font-family: var(--dt-font-body);
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.75rem 1.9rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+
+.dt-btn-primary, .dt-btn-cta {
+  background: var(--dt-primary);
+  color: #fff !important;
+  border: none;
+  box-shadow: var(--dt-shadow-soft);
+}
+.dt-btn-primary:hover, .dt-btn-cta:hover {
+  background: var(--dt-primary-dark);
+  box-shadow: var(--dt-shadow-lift);
+  color: #fff;
+}
+
+.dt-btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--dt-primary);
+  color: var(--dt-primary) !important;
+}
+.dt-btn-outline:hover { background: var(--dt-primary); color: #fff !important; }
+/* Footer needs a light-colored outline variant since the background is dark */
+.dt-footer .dt-btn-outline {
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #fff !important;
+}
+.dt-footer .dt-btn-outline:hover {
+  background: var(--dt-accent);
+  border-color: var(--dt-accent);
+  color: var(--dt-primary-dark) !important;
+}
+
+.dt-btn-light {
+  background: rgba(255,255,255,0.92);
+  color: var(--dt-primary-dark) !important;
+  border: none;
+}
+.dt-btn-light:hover { background: #fff; }
+
+/* ============ Navbar ============ */
+.dt-navbar {
+  padding: 1.35rem 0;
+  background: transparent;
+  transition: all 0.35s ease;
+}
+.dt-navbar.scrolled {
+  background: rgba(244, 241, 232, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.7rem 0;
+  box-shadow: 0 8px 30px -12px rgba(43,42,38,0.15);
+}
+.dt-brand {
+  font-family: var(--dt-font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--dt-primary-dark) !important;
+}
+.dt-navbar:not(.scrolled) .dt-brand,
+.dt-navbar:not(.scrolled) .nav-link {
+  color: #fff !important;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+}
+.dt-brand span { color: var(--dt-accent); font-style: italic; }
+.nav-link {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--dt-ink) !important;
+  padding: 0.5rem 1rem !important;
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 1rem; right: 1rem; bottom: 0.2rem;
+  height: 2px;
+  background: var(--dt-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.nav-link:hover::after { transform: scaleX(1); }
+
+/* ============ Hero ============ */
+.dt-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+/* Hero entrance: navbar and hero copy stay hidden until the visitor's first scroll */
+body.home-hero-entrance .dt-navbar:not(.dt-revealed) {
+  opacity: 0;
+  transform: translateY(-14px);
+  pointer-events: none;
+}
+body.home-hero-entrance .dt-hero-content:not(.dt-revealed) > * {
+  opacity: 0;
+  transform: translateY(18px);
+}
+body.home-hero-entrance .dt-scroll-indicator:not(.dt-revealed) {
+  opacity: 0;
+}
+.dt-hero-content > * {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.dt-scroll-indicator {
+  transition: opacity 0.5s ease;
+}
+
+.dt-hero-media {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.dt-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,26,21,0.55) 0%, rgba(20,26,21,0.35) 45%, rgba(20,26,21,0.75) 100%);
+  z-index: 1;
+}
+.dt-hero-content { position: relative; z-index: 2; }
+.dt-hero-title {
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+.dt-hero-title em { color: var(--dt-accent); font-style: italic; }
+.dt-hero-sub {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  max-width: 620px;
+  color: rgba(255,255,255,0.9);
+  margin: 1.4rem 0 2.2rem;
+}
+.dt-scroll-indicator {
+  position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
+  z-index: 2; color: #fff; opacity: 0.85; text-align: center; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.dt-scroll-indicator .dt-mouse {
+  width: 26px; height: 42px; border: 2px solid #fff; border-radius: 20px;
+  margin: 10px auto 0; position: relative;
+}
+.dt-scroll-indicator .dt-mouse::before {
+  content: ""; position: absolute; top: 6px; left: 50%; width: 4px; height: 8px;
+  background: #fff; border-radius: 2px; transform: translateX(-50%);
+  animation: dtScrollDot 1.6s infinite;
+}
+@keyframes dtScrollDot {
+  0% { opacity: 1; top: 6px; }
+  70% { opacity: 0; top: 20px; }
+  100% { opacity: 0; top: 6px; }
+}
+
+/* ============ Sections ============ */
+.dt-section { padding: var(--dt-space-section) 0; }
+.dt-section-alt { background: #EFEBDD; }
+.dt-section-title { font-size: clamp(2rem, 3.4vw, 2.9rem); margin: 0.6rem 0 1rem; }
+.dt-section-lede { max-width: 620px; color: #5B5A54; font-size: 1.05rem; }
+
+/* ============ Cards ============ */
+.dt-card {
+  background: var(--dt-white);
+  border-radius: var(--dt-radius-md);
+  box-shadow: var(--dt-shadow-soft);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  height: 100%;
+  border: 1px solid rgba(72,98,79,0.06);
+}
+.dt-card:hover { transform: translateY(-8px); box-shadow: var(--dt-shadow-lift); }
+.dt-card-img-wrap { aspect-ratio: 4/3; overflow: hidden; position: relative; }
+.dt-card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.dt-card:hover .dt-card-img-wrap img { transform: scale(1.08); }
+.dt-card-body { padding: 1.5rem; }
+.dt-card-badge {
+  position: absolute; top: 14px; left: 14px;
+  background: rgba(255,255,255,0.92); color: var(--dt-primary-dark);
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.3rem 0.75rem; border-radius: 999px;
+}
+.dt-price-tag {
+  font-family: var(--dt-font-heading); font-size: 1.5rem; color: var(--dt-primary);
+  font-weight: 700;
+}
+
+/* ============ Fleet Tier Pills ============ */
+.dt-tier-pills {
+  display: inline-flex; background: #fff; border-radius: 999px; padding: 6px;
+  box-shadow: var(--dt-shadow-soft); gap: 4px;
+}
+.dt-tier-pills .btn {
+  border-radius: 999px; padding: 0.6rem 1.6rem; font-size: 0.9rem;
+  background: transparent; color: var(--dt-primary-dark); box-shadow: none;
+}
+.dt-tier-pills .btn.active { background: var(--dt-primary); color: #fff; }
+
+/* ============ Our Story ============ */
+.dt-stat-card {
+  background: #fff; border-radius: var(--dt-radius-md); padding: 2rem 1.5rem;
+  text-align: center; box-shadow: var(--dt-shadow-soft); height: 100%;
+}
+.dt-stat-number {
+  font-family: var(--dt-font-heading); font-size: 2.6rem; font-weight: 700; color: var(--dt-primary);
+}
+
+.dt-staff-row { display: flex; align-items: center; gap: 2.5rem; margin-bottom: 3rem; }
+.dt-staff-row.reverse { flex-direction: row-reverse; }
+.dt-staff-img { flex: 0 0 42%; }
+.dt-staff-img img { width: 100%; border-radius: var(--dt-radius-lg); box-shadow: var(--dt-shadow-soft); aspect-ratio: 4/3; object-fit: cover; }
+.dt-staff-content { flex: 1; }
+@media (max-width: 767px) {
+  .dt-staff-row, .dt-staff-row.reverse { flex-direction: column; }
+  .dt-staff-img { flex: 0 0 100%; width: 100%; }
+}
+
+/* ============ Memories — infinite scroll ============ */
+.dt-memories-track-wrap { overflow: hidden; position: relative; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.dt-memories-track { display: flex; gap: 1.2rem; width: max-content; animation: dtScrollX 40s linear infinite; }
+.dt-memories-track:hover { animation-play-state: paused; }
+.dt-memory-item { width: 260px; flex: 0 0 auto; border-radius: var(--dt-radius-md); overflow: hidden; aspect-ratio: 1/1; box-shadow: var(--dt-shadow-soft); }
+.dt-memory-item img { width: 100%; height: 100%; object-fit: cover; }
+@keyframes dtScrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ============ Reviews ============ */
+.dt-review-card { background: #fff; border-radius: var(--dt-radius-md); padding: 1.75rem; box-shadow: var(--dt-shadow-soft); height: 100%; }
+.dt-review-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }
+.dt-stars { color: var(--dt-accent); letter-spacing: 2px; }
+
+/* ============ Contact ============ */
+.dt-contact-card { background: #fff; border-radius: var(--dt-radius-lg); box-shadow: var(--dt-shadow-soft); padding: clamp(1.5rem, 4vw, 3rem); }
+.form-control, .form-select {
+  border-radius: var(--dt-radius-sm); border: 1.5px solid #DEDACB; padding: 0.75rem 1rem; font-family: var(--dt-font-body);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--dt-primary); box-shadow: 0 0 0 4px rgba(72,98,79,0.12);
+}
+.form-label { font-weight: 600; font-size: 0.9rem; color: var(--dt-primary-dark); margin-bottom: 0.4rem; }
+
+.dt-contact-links a {
+  display: flex; align-items: center; gap: 12px; color: var(--dt-ink); font-weight: 600; margin-bottom: 1rem;
+}
+.dt-contact-links i { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; background: var(--dt-secondary); color: var(--dt-primary-dark); border-radius: 50%; font-size: 1.1rem; }
+
+.dt-map-frame { border-radius: var(--dt-radius-md); overflow: hidden; box-shadow: var(--dt-shadow-soft); }
+
+/* ============ Footer ============ */
+.dt-footer { background: var(--dt-primary-dark); color: rgba(255,255,255,0.85); padding: 4rem 0 1.5rem; }
+.dt-brand-footer { color: #fff !important; }
+.dt-footer-tag { margin-top: 0.75rem; color: rgba(255,255,255,0.65); font-size: 0.92rem; max-width: 320px; }
+.dt-footer-heading { color: #fff; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; font-weight: 700; }
+.dt-footer-links a { color: rgba(255,255,255,0.75); display: block; margin-bottom: 0.5rem; font-size: 0.92rem; }
+.dt-footer-links a:hover { color: var(--dt-accent); }
+.dt-footer-address a { color: rgba(255,255,255,0.85); display: block; margin-bottom: 0.3rem; }
+.dt-footer-divider { border-color: rgba(255,255,255,0.15); margin: 2rem 0 1.2rem; }
+.dt-copyright { font-size: 0.82rem; color: rgba(255,255,255,0.55); margin: 0; }
+
+/* ============ WhatsApp FAB ============ */
+.dt-whatsapp-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 1500;
+  width: 58px; height: 58px; border-radius: 50%;
+  background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem; box-shadow: 0 12px 30px -8px rgba(0,0,0,0.4);
+  animation: dtPulse 2.5s ease-in-out infinite;
+}
+@keyframes dtPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+/* ============ Focus states / a11y ============ */
+a:focus-visible, button:focus-visible, .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--dt-accent); outline-offset: 2px;
+}
+
+/* ============ Utility ============ */
+.dt-divider-accent { width: 60px; height: 3px; background: var(--dt-accent); border-radius: 3px; }
+
+@media (max-width: 767px) {
+  .dt-hero { min-height: 92vh; }
+}

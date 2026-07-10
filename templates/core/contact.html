@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="dt-section" style="padding-top: 9rem;">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Contact Us</p>
+      <h1 class="dt-section-title">Let's Plan Your Trip</h1>
+      <p class="dt-section-lede mx-auto">Fill in your details and our team will get back to you on call or WhatsApp within minutes.</p>
+    </div>
+
+    <div class="row g-5">
+      <div class="col-lg-7" data-aos="fade-right">
+        {% include "core/_contact_form.html" with form=contact_form %}
+      </div>
+      <div class="col-lg-5" data-aos="fade-left">
+        <div class="dt-contact-links mb-4">
+          <a href="tel:+91{{ COMPANY_PHONE }}"><i class="bi bi-telephone-fill" aria-hidden="true"></i> {{ COMPANY_PHONE_DISPLAY }}</a>
+          <a href="{{ COMPANY_WHATSAPP_LINK }}" target="_blank" rel="noopener"><i class="bi bi-whatsapp" aria-hidden="true"></i> Chat on WhatsApp</a>
+          <a href="mailto:{{ COMPANY_EMAIL }}"><i class="bi bi-envelope-fill" aria-hidden="true"></i> {{ COMPANY_EMAIL }}</a>
+          <a href="#" onclick="return false;" style="cursor:default;"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i> {{ COMPANY_ADDRESS_LINE1 }}, {{ COMPANY_ADDRESS_LINE2 }}</a>
+        </div>
+        <div class="dt-map-frame">
+          <iframe src="{{ GOOGLE_MAP_EMBED }}" width="100%" height="360" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Dreams Tours and Travels location map"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="dt-section" style="padding-top: 9rem;">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Our Fleet</p>
+      <h1 class="dt-section-title">Complete Vehicle Fleet</h1>
+      <p class="dt-section-lede mx-auto">Choose Budget Friendly or Premium — every vehicle is maintained, insured and driven by professional chauffeurs.</p>
+    </div>
+
+    <div class="text-center mb-5" data-aos="fade-up">
+      <div class="dt-tier-pills">
+        <button type="button" data-fleet-tier="budget" class="btn {% if active_tier == 'budget' %}active{% endif %}">Budget Friendly</button>
+        <button type="button" data-fleet-tier="premium" class="btn {% if active_tier == 'premium' %}active{% endif %}">Premium</button>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for vehicle in vehicles %}
+      <div class="col-md-6 col-lg-4" id="{{ vehicle.slug }}" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'50' }}">
+        <div class="dt-card">
+          <div class="dt-card-img-wrap">
+            {% if vehicle.image %}
+            <img src="{{ vehicle.image.url }}" alt="{{ vehicle.name }} {{ vehicle.get_category_display }} for hire" loading="lazy" width="400" height="300">
+            {% else %}
+            <img src="{% static 'img/vehicle-placeholder.jpg' %}" alt="{{ vehicle.name }}" loading="lazy" width="400" height="300">
+            {% endif %}
+            <span class="dt-card-badge">{{ vehicle.get_category_display }}</span>
+          </div>
+          <div class="dt-card-body">
+            <h2 class="h5 mb-1">{{ vehicle.name }}</h2>
+            <p class="text-muted small mb-2"><i class="bi bi-people-fill" aria-hidden="true"></i> {{ vehicle.seats }} Seater</p>
+            <p class="small mb-3">{{ vehicle.description }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="dt-price-tag">₹{{ vehicle.price_per_km }}<small class="fs-6 text-muted">/km</small></span>
+              <a href="{% url 'core:contact' %}" class="btn dt-btn-outline btn-sm">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">Vehicles for this category will appear here once added in the admin panel.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="dt-section dt-section-alt">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Not Sure Which Vehicle?</p>
+      <h2 class="dt-section-title">Talk To Our Travel Experts</h2>
+      <p class="dt-section-lede mx-auto">We'll help you choose the right vehicle for your group size, budget and route.</p>
+      <a href="{% url 'core:contact' %}" class="btn dt-btn-primary btn-lg mt-3">Contact Us</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

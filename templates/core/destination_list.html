@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="dt-section" style="padding-top: 9rem;">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Destinations</p>
+      <h1 class="dt-section-title">Explore All Destinations</h1>
+      <p class="dt-section-lede mx-auto">Search and filter destinations by travel type and best season.</p>
+    </div>
+
+    <form method="get" class="dt-contact-card mb-5" data-aos="fade-up" role="search" aria-label="Destination search and filters">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label" for="destSearch">Destination Name</label>
+          <input type="text" id="destSearch" name="q" class="form-control" placeholder="e.g. Rameswaram" value="{{ query }}">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="travelType">Travel Type</label>
+          <select id="travelType" name="travel_type" class="form-select">
+            <option value="">All Types</option>
+            {% for value, label in travel_type_choices %}
+            <option value="{{ value }}" {% if travel_type == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label" for="season">Best Season</label>
+          <select id="season" name="season" class="form-select">
+            <option value="">Any Season</option>
+            {% for value, label in season_choices %}
+            <option value="{{ value }}" {% if season == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn dt-btn-primary w-100"><i class="bi bi-search" aria-hidden="true"></i> Filter</button>
+        </div>
+      </div>
+    </form>
+
+    <div class="row g-4">
+      {% for destination in destinations %}
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'50' }}">
+        <div class="dt-card">
+          <div class="dt-card-img-wrap">
+            {% if destination.image %}
+            <img src="{{ destination.image.url }}" alt="{{ destination.name }} tour package" loading="lazy" width="400" height="300">
+            {% else %}
+            <img src="{% static 'img/destination-placeholder.jpg' %}" alt="{{ destination.name }}" loading="lazy" width="400" height="300">
+            {% endif %}
+            <span class="dt-card-badge">{{ destination.get_travel_type_display }}</span>
+          </div>
+          <div class="dt-card-body">
+            <h2 class="h5 mb-1">{{ destination.name }}</h2>
+            <p class="text-muted small mb-2"><i class="bi bi-calendar-event" aria-hidden="true"></i> {{ destination.best_time }}</p>
+            <p class="small mb-3">{{ destination.description|truncatewords:16 }}</p>
+            <a href="{{ destination.get_absolute_url }}" class="btn dt-btn-outline btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center text-muted py-5">No destinations match your search. Try different filters.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

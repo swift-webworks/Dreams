@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ SITE_URL }}/"},
+    {"@type": "ListItem", "position": 2, "name": "Destinations", "item": "{{ SITE_URL }}/destinations/"},
+    {"@type": "ListItem", "position": 3, "name": "{{ destination.name }}", "item": "{{ SITE_URL }}{{ canonical_path }}"}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="dt-section" style="padding-top: 9rem;">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-4" data-aos="fade-up">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'core:destination_list' %}">Destinations</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ destination.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-7" data-aos="fade-right">
+        <div class="dt-card-img-wrap mb-4" style="border-radius: var(--dt-radius-lg); aspect-ratio: 16/10;">
+          {% if destination.image %}
+          <img src="{{ destination.image.url }}" alt="{{ destination.name }} — Dreams Tours and Travels" loading="lazy" width="800" height="500" style="border-radius: var(--dt-radius-lg);">
+          {% else %}
+          <img src="{% static 'img/destination-placeholder.jpg' %}" alt="{{ destination.name }}" loading="lazy" width="800" height="500" style="border-radius: var(--dt-radius-lg);">
+          {% endif %}
+        </div>
+        <h1 class="dt-section-title">{{ destination.name }}</h1>
+        <p class="mb-4">{{ destination.description }}</p>
+
+        <div class="row g-3">
+          <div class="col-sm-4">
+            <div class="dt-stat-card text-start p-3">
+              <i class="bi bi-calendar-event" style="color:var(--dt-primary)" aria-hidden="true"></i>
+              <p class="small text-muted mb-0 mt-2">Best Time</p>
+              <p class="fw-semibold mb-0">{{ destination.best_time }}</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="dt-stat-card text-start p-3">
+              <i class="bi bi-sun" style="color:var(--dt-primary)" aria-hidden="true"></i>
+              <p class="small text-muted mb-0 mt-2">Best Season</p>
+              <p class="fw-semibold mb-0">{{ destination.get_best_season_display }}</p>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="dt-stat-card text-start p-3">
+              <i class="bi bi-people" style="color:var(--dt-primary)" aria-hidden="true"></i>
+              <p class="small text-muted mb-0 mt-2">Ideal For</p>
+              <p class="fw-semibold mb-0">{{ destination.get_travel_type_display }}</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="{% url 'core:contact' %}" class="btn dt-btn-primary btn-lg mt-4">
+          <i class="bi bi-whatsapp" aria-hidden="true"></i> Enquire About This Trip
+        </a>
+      </div>
+
+      <div class="col-lg-5" data-aos="fade-left">
+        <h2 class="h4 mb-3">Other Destinations</h2>
+        <div class="d-flex flex-column gap-3">
+          {% for related in related_destinations %}
+          <a href="{{ related.get_absolute_url }}" class="dt-card d-flex flex-row align-items-center text-decoration-none" style="padding: 0.75rem;">
+            <div style="width:90px; height:70px; border-radius: var(--dt-radius-sm); overflow:hidden; flex-shrink:0;">
+              {% if related.image %}
+              <img src="{{ related.image.url }}" alt="{{ related.name }}" loading="lazy" width="90" height="70" style="width:100%; height:100%; object-fit:cover;">
+              {% endif %}
+            </div>
+            <div class="ms-3">
+              <p class="fw-semibold mb-0 text-dark">{{ related.name }}</p>
+              <p class="small text-muted mb-0">{{ related.best_time }}</p>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% load static %}
+<div class="dt-contact-card">
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" action="{% url 'core:contact' %}" novalidate aria-label="Trip enquiry form">
+    {% csrf_token %}
+    {{ form.website }}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.name.id_for_label }}">Name</label>
+        {{ form.name }}
+        {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.phone.id_for_label }}">Phone</label>
+        {{ form.phone }}
+        {% if form.phone.errors %}<div class="text-danger small mt-1">{{ form.phone.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.destination.id_for_label }}">Destination</label>
+        {{ form.destination }}
+        {% if form.destination.errors %}<div class="text-danger small mt-1">{{ form.destination.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.pickup_location.id_for_label }}">Pickup Location</label>
+        {{ form.pickup_location }}
+        {% if form.pickup_location.errors %}<div class="text-danger small mt-1">{{ form.pickup_location.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.travel_days.id_for_label }}">Travel Days</label>
+        {{ form.travel_days }}
+        {% if form.travel_days.errors %}<div class="text-danger small mt-1">{{ form.travel_days.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.members.id_for_label }}">Number of Members</label>
+        {{ form.members }}
+        {% if form.members.errors %}<div class="text-danger small mt-1">{{ form.members.errors.0 }}</div>{% endif %}
+      </div>
+    </div>
+
+    <button type="submit" class="btn dt-btn-primary btn-lg w-100 mt-4">Submit Enquiry</button>
+  </form>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init({ publicKey: "YOUR_PUBLIC_KEY" });
+
+    var dtForm = document.querySelector('form[aria-label="Trip enquiry form"]');
+    if (!dtForm) return;
+
+    dtForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", dtForm)
+        .then(function () {
+          console.log("Notification email sent");
+        })
+        .catch(function (err) {
+          console.error("EmailJS failed:", err);
+        })
+        .finally(function () {
+          dtForm.submit(); // continues the normal Django submission (saves to DB + redirects)
+        });
+    });
+  })();
+</script>
+</div>
