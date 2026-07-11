@@ -50,7 +50,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
   (function () {
-    emailjs.init({ publicKey: "YOUR_PUBLIC_KEY" });
+    emailjs.init({ publicKey: "wph-yGI_Mhm4zii_t" });
 
     var dtForm = document.querySelector('form[aria-label="Trip enquiry form"]');
     if (!dtForm) return;
@@ -58,7 +58,7 @@
     dtForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", dtForm)
+      emailjs.sendForm("service_feczzea", "template_04633dj", dtForm)
         .then(function () {
           console.log("Notification email sent");
         })
