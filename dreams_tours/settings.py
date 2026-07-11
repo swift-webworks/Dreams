@@ -32,9 +32,10 @@ ALLOWED_HOSTS = [
     "dreamstours.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
+    "www.dreamstoursandtravel.in",
 ]
 
-SITE_URL = os.environ.get("SITE_URL", "https://www.dreamstourstravels.in")
+SITE_URL = os.environ.get("SITE_URL", "https://www.dreamstoursandtravel.in")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -154,7 +155,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "https://www.dreamstourstravels.in")
+CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "https://www.dreamstoursandtravel.in")
 
 # ---------------------------------------------------------------------------
 # Caching — used for basic contact-form rate limiting
@@ -175,8 +176,8 @@ EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
 EMAIL_USE_TLS = env_bool("EMAIL_USE_TLS", default=True)
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "info@dreamstourstravels.in")
-NOTIFICATION_EMAIL = os.environ.get("NOTIFICATION_EMAIL", "info@dreamstourstravels.in")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "info@dreamstoursandtravel.in")
+NOTIFICATION_EMAIL = os.environ.get("NOTIFICATION_EMAIL", "info@dreamstoursandtravel.in")
 
 # ---------------------------------------------------------------------------
 # Logging
