@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django.http import HttpResponse
 
-from .models import Vehicle, Destination, Story, Memory, ClientReview
+from .models import Vehicle, Destination, Story, Memory, ClientReview, BlogCategory, BlogPost
 from .forms import ContactForm
 
 
@@ -26,6 +26,7 @@ def home(request):
         "featured_destinations": Destination.objects.filter(is_featured=True)[:3],
         "memories": Memory.objects.all()[:16],
         "reviews": ClientReview.objects.filter(is_published=True)[:6],
+        "featured_posts": BlogPost.objects.filter(is_published=True, is_featured=True)[:3],
         "contact_form": ContactForm(),
     }
     return render(request, "core/home.html", context)
@@ -136,6 +137,39 @@ def contact(request):
     }
     return render(request, "core/contact.html", context)
 
+def blog_list(request):
+    posts = BlogPost.objects.filter(is_published=True)
+    category_slug = request.GET.get("category", "")
+    if category_slug:
+        posts = posts.filter(category__slug=category_slug)
+
+    context = {
+        "meta_title": "Travel Blog — Guides, Tips & Stories | Dreams Tours and Travels",
+        "meta_description": "Travel guides, tips and stories from Dreams Tours and Travels — plan your "
+                             "next trip across South India with local insights from Rameswaram.",
+        "canonical_path": "/blog/",
+        "posts": posts,
+        "categories": BlogCategory.objects.all(),
+        "active_category": category_slug,
+    }
+    return render(request, "core/blog_list.html", context)
+
+
+def blog_detail(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug, is_published=True)
+    related_posts = BlogPost.objects.filter(is_published=True).exclude(pk=post.pk)
+    if post.category:
+        related_posts = related_posts.filter(category=post.category)
+    related_posts = related_posts[:3]
+
+    context = {
+        "meta_title": post.get_meta_title(),
+        "meta_description": post.get_meta_description(),
+        "canonical_path": f"/blog/{post.slug}/",
+        "post": post,
+        "related_posts": related_posts,
+    }
+    return render(request, "core/blog_detail.html", context)
 
 def robots_txt(request):
     lines = [

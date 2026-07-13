@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import RegexValidator
 
@@ -176,3 +177,64 @@ class ContactSubmission(TimeStampedModel):
 
     def __str__(self):
         return f"{self.name} — {self.destination}"
+
+
+class BlogCategory(TimeStampedModel):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=60, unique=True, blank=True)
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["display_order", "name"]
+        verbose_name = "Blog Category"
+        verbose_name_plural = "Blog — Categories"
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+
+class BlogPost(TimeStampedModel):
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True, blank=True)
+    category = models.ForeignKey(
+        BlogCategory, on_delete=models.SET_NULL, null=True, blank=True, related_name="posts"
+    )
+    featured_image = models.ImageField(upload_to="blog/", help_text="Recommended: 1200x800 WebP/JPG")
+    excerpt = models.CharField(max_length=220, help_text="Short summary shown on blog cards")
+    content = models.TextField(
+        help_text="Full article content. Basic HTML allowed: <p>, <h2>, <strong>, <em>, <ul>/<li>, <a>, <img>"
+    )
+    author = models.CharField(max_length=100, default="Dreams Tours and Travels")
+    published_date = models.DateField(default=timezone.now)
+    is_published = models.BooleanField(default=False, help_text="Uncheck to keep this post as a draft")
+    is_featured = models.BooleanField(default=False, help_text="Show on Home page (max 3 recommended)")
+    meta_title = models.CharField(max_length=70, blank=True, help_text="Leave blank to auto-generate")
+    meta_description = models.CharField(max_length=160, blank=True, help_text="Leave blank to auto-generate")
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["-published_date", "display_order"]
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog — Posts"
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("core:blog_detail", kwargs={"slug": self.slug})
+
+    def get_meta_title(self):
+        return self.meta_title or f"{self.title} | Dreams Tours and Travels Blog"
+
+    def get_meta_description(self):
+        return self.meta_description or self.excerpt

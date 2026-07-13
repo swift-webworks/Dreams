@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission
+from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission, BlogCategory, BlogPost
 
 
 class ThumbnailMixin:
@@ -79,6 +79,34 @@ class ContactSubmissionAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "display_order")
+    list_editable = ("display_order",)
+    prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ("thumbnail", "title", "category", "is_published", "is_featured", "published_date", "display_order")
+    list_display_links = ("title",)
+    list_editable = ("is_published", "is_featured", "display_order")
+    list_filter = ("category", "is_published", "is_featured")
+    search_fields = ("title", "excerpt", "content")
+    prepopulated_fields = {"slug": ("title",)}
+    fieldsets = (
+        ("Basic Info", {"fields": ("title", "slug", "category", "author")}),
+        ("Content", {"fields": ("featured_image", "excerpt", "content")}),
+        ("SEO", {"fields": ("meta_title", "meta_description"), "classes": ("collapse",)}),
+        ("Publishing", {"fields": ("published_date", "is_published", "is_featured", "display_order")}),
+    )
+
+    def thumbnail(self, obj):
+        if obj.featured_image:
+            return format_html('<img src="{}" style="height:50px;border-radius:6px;" />', obj.featured_image.url)
+        return "—"
+    thumbnail.short_description = "Preview"
 
 
 admin.site.site_header = "Dreams Tours and Travels — Admin"

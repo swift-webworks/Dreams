@@ -4,12 +4,13 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
-from core.sitemaps import StaticViewSitemap, DestinationSitemap
+from core.sitemaps import StaticViewSitemap, DestinationSitemap, BlogSitemap
 from core.views import robots_txt
 
 sitemaps = {
     "static": StaticViewSitemap,
     "destinations": DestinationSitemap,
+    "blog": BlogSitemap,
 }
 
 urlpatterns = [

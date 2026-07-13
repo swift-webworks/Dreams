@@ -304,6 +304,42 @@ body.home-hero-entrance .dt-scroll-indicator:not(.dt-revealed) {
 .dt-memory-item img { width: 100%; height: 100%; object-fit: cover; }
 @keyframes dtScrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+/* ============ Blog ============ */
+.dt-blog-scroll {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.75rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--dt-secondary) transparent;
+}
+.dt-blog-scroll::-webkit-scrollbar { height: 6px; }
+.dt-blog-scroll::-webkit-scrollbar-thumb { background: var(--dt-secondary); border-radius: 999px; }
+.dt-blog-card-wrap {
+  scroll-snap-align: start;
+  flex: 0 0 300px;
+}
+@media (max-width: 480px) {
+  .dt-blog-card-wrap { flex-basis: 260px; }
+}
+.dt-blog-date { font-size: 0.78rem; color: #8B8A84; margin-bottom: 0.3rem; }
+.dt-blog-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.dt-blog-pills a {
+  font-family: var(--dt-font-body); font-weight: 600; font-size: 0.85rem;
+  padding: 0.5rem 1.2rem; border-radius: 999px; border: 1px solid #DEDACB;
+  color: var(--dt-primary-dark); background: #fff;
+}
+.dt-blog-pills a.active { background: var(--dt-primary); color: #fff; border-color: var(--dt-primary); }
+.dt-blog-content { font-size: 1.05rem; color: #3D3C38; line-height: 1.8; }
+.dt-blog-content p { margin-bottom: 1.4rem; }
+.dt-blog-content h2 { font-size: 1.5rem; margin: 2rem 0 1rem; }
+.dt-blog-content h3 { font-size: 1.25rem; margin: 1.6rem 0 0.8rem; }
+.dt-blog-content ul, .dt-blog-content ol { margin-bottom: 1.4rem; padding-left: 1.4rem; }
+.dt-blog-content a { color: var(--dt-primary); text-decoration: underline; }
+.dt-blog-content img { width: 100%; border-radius: var(--dt-radius-md); margin: 1rem 0; }
+
 /* ============ Reviews ============ */
 .dt-review-card { background: #fff; border-radius: var(--dt-radius-md); padding: 1.75rem; box-shadow: var(--dt-shadow-soft); height: 100%; }
 .dt-review-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; }

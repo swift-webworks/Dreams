@@ -227,6 +227,46 @@
 </section>
 {% endif %}
 
+<!-- ============ LATEST FROM THE BLOG ============ -->
+{% if featured_posts %}
+<section class="dt-section" id="blog">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">Blog</p>
+      <h2 class="dt-section-title">Latest From The Blog</h2>
+      <p class="dt-section-lede mx-auto">Guides, tips and stories to help you plan your next trip.</p>
+    </div>
+
+    <div class="dt-blog-scroll" data-aos="fade-up">
+      {% for post in featured_posts %}
+      <div class="dt-blog-card-wrap">
+        <div class="dt-card">
+          <div class="dt-card-img-wrap">
+            {% if post.featured_image %}
+            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" width="300" height="225">
+            {% endif %}
+            {% if post.category %}
+            <span class="dt-card-badge">{{ post.category.name }}</span>
+            {% endif %}
+          </div>
+          <div class="dt-card-body">
+            <p class="dt-blog-date">{{ post.published_date|date:"d M Y" }}</p>
+            <h3 class="h6 mb-2">{{ post.title }}</h3>
+            <p class="small text-muted mb-3">{{ post.excerpt|truncatewords:14 }}</p>
+            <a href="{{ post.get_absolute_url }}" class="btn dt-btn-outline btn-sm">Read More</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{% url 'core:blog_list' %}" class="btn dt-btn-primary btn-lg">More Blogs</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <!-- ============ CLIENT STORIES ============ -->
 {% if reviews %}
 <section class="dt-section" id="client-stories">
