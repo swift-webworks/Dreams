@@ -3,13 +3,42 @@
   "use strict";
 
   document.addEventListener("DOMContentLoaded", function () {
-    initNavbarScroll();
-    initHeroEntrance();
-    initAOS();
-    initFleetTierSwitch();
-    initCounters();
-    initSmoothAnchors();
+    safeRun("initPreloader", initPreloader);
+    safeRun("initNavbarScroll", initNavbarScroll);
+    safeRun("initHeroEntrance", initHeroEntrance);
+    safeRun("initAOS", initAOS);
+    safeRun("initFleetTierSwitch", initFleetTierSwitch);
+    safeRun("initCounters", initCounters);
+    safeRun("initSmoothAnchors", initSmoothAnchors);
   });
+
+  // Runs each init function in isolation — if one throws, it's logged to the
+  // console but every other init still runs (nothing else gets blocked).
+  function safeRun(name, fn) {
+    try {
+      fn();
+    } catch (err) {
+      console.error("[main.js] " + name + " failed:", err);
+    }
+  }
+
+  function initPreloader() {
+    var preloader = document.getElementById("dtPreloader");
+    if (!preloader) return; // only exists on the Home page
+
+    document.body.style.overflow = "hidden";
+
+    var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var minDuration = reducedMotion ? 300 : 2000;
+
+    setTimeout(function () {
+      preloader.classList.add("dt-hide");
+      document.body.style.overflow = "";
+      setTimeout(function () {
+        if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+      }, 700);
+    }, minDuration);
+  }
 
   function initNavbarScroll() {
     var navbar = document.getElementById("dtNavbar");
