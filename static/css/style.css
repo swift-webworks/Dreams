@@ -319,10 +319,11 @@ body.home-hero-entrance .dt-scroll-indicator:not(.dt-revealed) {
 .dt-blog-scroll::-webkit-scrollbar-thumb { background: var(--dt-secondary); border-radius: 999px; }
 .dt-blog-card-wrap {
   scroll-snap-align: start;
-  flex: 0 0 300px;
+  flex: 1 1 0;
+  min-width: 280px;
 }
 @media (max-width: 480px) {
-  .dt-blog-card-wrap { flex-basis: 260px; }
+  .dt-blog-card-wrap { flex: 1 1 100%; min-width: 100%; }
 }
 .dt-blog-date { font-size: 0.78rem; color: #8B8A84; margin-bottom: 0.3rem; }
 .dt-blog-pills { display: flex; flex-wrap: wrap; gap: 8px; }
