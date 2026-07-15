@@ -8,10 +8,10 @@ def company_info(request):
         "COMPANY_PHONE": "7708155016",
         "COMPANY_PHONE_DISPLAY": "+91 77081 55016",
         "COMPANY_WHATSAPP_LINK": "https://wa.me/917708155016",
-        "COMPANY_EMAIL": "toursandtravelsdreams@gmail.com",
+        "COMPANY_EMAIL": "dreamstoursandtravels374@gmail.com",
         "COMPANY_ADDRESS_LINE1": "Easwari Amman Kovil Street",
         "COMPANY_ADDRESS_LINE2": "Nearby Temple Road",
-        "COMPANY_CITY": "Rameswaram, Tamil Nadu - 623518",
+        "COMPANY_CITY": "Rameswaram, Tamil Nadu - 623526",
         "SITE_URL": getattr(settings, "SITE_URL", "https://www.dreamstourstravel.in"),
         "GOOGLE_MAP_EMBED": (
             "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0!2d79.3129!3d9.2876"

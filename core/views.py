@@ -5,7 +5,7 @@ from django.core.cache import cache
 from django.conf import settings
 from django.http import HttpResponse
 
-from .models import Vehicle, Destination, Story, Memory, ClientReview, BlogCategory, BlogPost
+from .models import Vehicle, Destination, Story, Memory, ClientReview, BlogCategory, BlogPost, Service
 from .forms import ContactForm
 
 
@@ -38,6 +38,7 @@ def fleet_list(request):
         tier = "budget"
     vehicles = Vehicle.objects.filter(tier=tier)
     context = {
+        "services": Service.objects.filter(is_active=True),
         "meta_title": "Our Fleet — Sedans, SUVs & Tempo Travellers | Dreams Tours and Travels",
         "meta_description": "Explore our complete fleet of budget and premium vehicles — sedans, SUVs, "
                              "and tempo travellers — available for hire in Rameswaram and across Tamil Nadu.",

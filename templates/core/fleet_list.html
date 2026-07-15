@@ -2,6 +2,31 @@
 {% load static %}
 
 {% block content %}
+<section class="dt-section" style="padding-top: 8rem;">
+  <div class="container">
+    <div class="text-center mb-3" data-aos="fade-up">
+      <p class="dt-eyebrow justify-content-center">What We Offer</p>
+      <h1 class="dt-section-title">Our Services</h1>
+      <p class="dt-section-lede mx-auto">Tours, stays and transport, planned around you.</p>
+    </div>
+
+    {% if services %}
+    <div class="row g-3 mb-3">
+      {% for service in services %}
+      <div class="col-6 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:'50' }}">
+        <div class="dt-service-card">
+          <div class="dt-service-top-row">
+            <div class="dt-service-icon"><i class="bi {{ service.icon }}" aria-hidden="true"></i></div>
+            <span class="dt-service-badge">{{ service.badge_text }}</span>
+          </div>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
 <section class="dt-section" style="padding-top: 9rem;">
   <div class="container">
     <div class="text-center mb-5" data-aos="fade-up">

@@ -1,11 +1,11 @@
 {% load static %}
 <div class="dt-contact-card">
   {% if messages %}
-    {% for message in messages %}
-    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
-      {{ message }}
-    </div>
-    {% endfor %}
+  {% for message in messages %}
+  <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+    {{ message }}
+  </div>
+  {% endfor %}
   {% endif %}
 
   <form method="post" action="{% url 'core:contact' %}" novalidate aria-label="Trip enquiry form">
@@ -26,49 +26,107 @@
       <div class="col-md-6">
         <label class="form-label" for="{{ form.destination.id_for_label }}">Destination</label>
         {{ form.destination }}
-        {% if form.destination.errors %}<div class="text-danger small mt-1">{{ form.destination.errors.0 }}</div>{% endif %}
+        {% if form.destination.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.destination.errors.0 }}
+        </div>
+        {% endif %}
       </div>
       <div class="col-md-6">
         <label class="form-label" for="{{ form.pickup_location.id_for_label }}">Pickup Location</label>
         {{ form.pickup_location }}
-        {% if form.pickup_location.errors %}<div class="text-danger small mt-1">{{ form.pickup_location.errors.0 }}</div>{% endif %}
+        {% if form.pickup_location.errors %}<div class="text-danger small mt-1">{{ form.pickup_location.errors.0 }}
+        </div>{% endif %}
       </div>
       <div class="col-md-6">
         <label class="form-label" for="{{ form.travel_days.id_for_label }}">Travel Days</label>
         {{ form.travel_days }}
-        {% if form.travel_days.errors %}<div class="text-danger small mt-1">{{ form.travel_days.errors.0 }}</div>{% endif %}
+        {% if form.travel_days.errors %}<div class="text-danger small mt-1">{{ form.travel_days.errors.0 }}</div>
+        {% endif %}
       </div>
       <div class="col-md-6">
         <label class="form-label" for="{{ form.members.id_for_label }}">Number of Members</label>
         {{ form.members }}
         {% if form.members.errors %}<div class="text-danger small mt-1">{{ form.members.errors.0 }}</div>{% endif %}
       </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.room_booking.id_for_label }}">
+          Room Booking
+        </label>
+
+        {{ form.room_booking }}
+
+        {% if form.room_booking.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.room_booking.errors.0 }}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="col-md-6" id="locationPlaceField" style="display:none;">
+        <label class="form-label" for="{{ form.location_place.id_for_label }}">
+          Location Place
+        </label>
+
+        {{ form.location_place }}
+
+        {% if form.location_place.errors %}
+        <div class="text-danger small mt-1">
+          {{ form.location_place.errors.0 }}
+        </div>
+        {% endif %}
+      </div>
     </div>
 
     <button type="submit" class="btn dt-btn-primary btn-lg w-100 mt-4">Submit Enquiry</button>
   </form>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init({ publicKey: "wph-yGI_Mhm4zii_t" });
+  <script>
+    (function () {
+      emailjs.init({ publicKey: "wph-yGI_Mhm4zii_t" });
 
-    var dtForm = document.querySelector('form[aria-label="Trip enquiry form"]');
-    if (!dtForm) return;
+      var dtForm = document.querySelector('form[aria-label="Trip enquiry form"]');
+      if (!dtForm) return;
 
-    dtForm.addEventListener("submit", function (e) {
-      e.preventDefault();
+      dtForm.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-      emailjs.sendForm("service_feczzea", "template_04633dj", dtForm)
-        .then(function () {
-          console.log("Notification email sent");
-        })
-        .catch(function (err) {
-          console.error("EmailJS failed:", err);
-        })
-        .finally(function () {
-          dtForm.submit(); // continues the normal Django submission (saves to DB + redirects)
-        });
+        emailjs.sendForm("service_feczzea", "template_04633dj", dtForm)
+          .then(function () {
+            console.log("Notification email sent");
+          })
+          .catch(function (err) {
+            console.error("EmailJS failed:", err);
+          })
+          .finally(function () {
+            dtForm.submit(); // continues the normal Django submission (saves to DB + redirects)
+          });
+      });
+    })();
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const roomBooking = document.getElementById("id_room_booking");
+      const locationField = document.getElementById("locationPlaceField");
+      const locationInput = document.getElementById("id_location_place");
+
+      function toggleLocationField() {
+
+        if (roomBooking.value === "Yes") {
+          locationField.style.display = "block";
+          locationInput.required = true;
+        } else {
+          locationField.style.display = "none";
+          locationInput.required = false;
+          locationInput.value = "";
+        }
+
+      }
+
+      toggleLocationField();
+
+      roomBooking.addEventListener("change", toggleLocationField);
+
     });
-  })();
-</script>
+
+  </script>
 </div>

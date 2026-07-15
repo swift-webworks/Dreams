@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission, BlogCategory, BlogPost
+from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission, BlogCategory, BlogPost, Service
 
 
 class ThumbnailMixin:
@@ -71,7 +71,8 @@ class ClientReviewAdmin(ThumbnailMixin, admin.ModelAdmin):
 
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
-    list_display = ("name", "phone", "destination", "travel_days", "members", "is_read", "created_at")
+    list_display = ("name", "phone", "destination", "travel_days", "members", "room_booking",
+        "location_place", "is_read", "created_at")
     list_editable = ("is_read",)
     list_filter = ("is_read", "created_at")
     search_fields = ("name", "phone", "destination")
@@ -107,6 +108,13 @@ class BlogPostAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" style="height:50px;border-radius:6px;" />', obj.featured_image.url)
         return "—"
     thumbnail.short_description = "Preview"
+    
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ("name", "icon", "badge_text", "is_active", "display_order")
+    list_display_links = ("name",)
+    list_editable = ("is_active", "display_order")
+    search_fields = ("name", "description")
 
 
 admin.site.site_header = "Dreams Tours and Travels — Admin"

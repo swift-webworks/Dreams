@@ -167,6 +167,22 @@ class ContactSubmission(TimeStampedModel):
     pickup_location = models.CharField(max_length=150)
     travel_days = models.PositiveSmallIntegerField(default=1)
     members = models.PositiveSmallIntegerField(default=1)
+    ROOM_CHOICES = [
+        ("Yes", "Yes"),
+        ("No", "No"),
+    ]
+
+    room_booking = models.CharField(
+        max_length=3,
+        choices=ROOM_CHOICES,
+        default="No"
+    )
+
+    location_place = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True
+    )
     is_read = models.BooleanField(default=False)
     ip_address = models.GenericIPAddressField(blank=True, null=True)
 
@@ -238,3 +254,22 @@ class BlogPost(TimeStampedModel):
 
     def get_meta_description(self):
         return self.meta_description or self.excerpt
+    
+class Service(TimeStampedModel):
+    name = models.CharField(max_length=100)
+    icon = models.CharField(
+        max_length=50, default="bi-compass",
+        help_text="Bootstrap Icons class name, e.g. bi-compass, bi-house-door, bi-car-front, bi-geo-alt"
+    )
+    description = models.CharField(max_length=220, help_text="Short one-line description shown on the card")
+    badge_text = models.CharField(max_length=60, default="Budget & Premium")
+    is_active = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["display_order", "name"]
+        verbose_name = "Service"
+        verbose_name_plural = "Fleet Page — Services"
+
+    def __str__(self):
+        return self.name
