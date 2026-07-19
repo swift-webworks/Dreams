@@ -167,6 +167,8 @@ class ContactSubmission(TimeStampedModel):
     pickup_location = models.CharField(max_length=150)
     travel_days = models.PositiveSmallIntegerField(default=1)
     members = models.PositiveSmallIntegerField(default=1)
+    start_date = models.DateField(null=True, blank=True, verbose_name="Travel Start Date")
+    return_date = models.DateField(null=True, blank=True, verbose_name="Travel Return Date")
     ROOM_CHOICES = [
         ("Yes", "Yes"),
         ("No", "No"),
@@ -194,6 +196,32 @@ class ContactSubmission(TimeStampedModel):
     def __str__(self):
         return f"{self.name} — {self.destination}"
 
+class RoomBooking(TimeStampedModel):
+    ROOM_TYPE_CHOICES = [
+        ("budget", "Budget"),
+        ("premium", "Premium"),
+    ]
+
+    name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=10, validators=[phone_validator])
+    email = models.EmailField(blank=True)
+    location = models.CharField(max_length=150, help_text="Where would you like to stay? e.g. Munnar, Ooty")
+    check_in_date = models.DateField()
+    check_out_date = models.DateField()
+    room_type = models.CharField(max_length=10, choices=ROOM_TYPE_CHOICES, default="budget")
+    number_of_rooms = models.PositiveSmallIntegerField(default=1)
+    number_of_guests = models.PositiveSmallIntegerField(default=1)
+    special_requests = models.TextField(blank=True, help_text="Any special requirements (optional)")
+    is_read = models.BooleanField(default=False)
+    ip_address = models.GenericIPAddressField(blank=True, null=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Room Booking"
+        verbose_name_plural = "Room Bookings"
+
+    def __str__(self):
+        return f"{self.name} — {self.location} ({self.check_in_date})"
 
 class BlogCategory(TimeStampedModel):
     name = models.CharField(max_length=50, unique=True)

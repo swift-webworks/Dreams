@@ -39,6 +39,16 @@
         </div>{% endif %}
       </div>
       <div class="col-md-6">
+        <label class="form-label" for="{{ form.start_date.id_for_label }}">Travel Start Date</label>
+        {{ form.start_date }}
+        {% if form.start_date.errors %}<div class="text-danger small mt-1">{{ form.start_date.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ form.return_date.id_for_label }}">Travel Return Date</label>
+        {{ form.return_date }}
+        {% if form.return_date.errors %}<div class="text-danger small mt-1">{{ form.return_date.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
         <label class="form-label" for="{{ form.travel_days.id_for_label }}">Travel Days</label>
         {{ form.travel_days }}
         {% if form.travel_days.errors %}<div class="text-danger small mt-1">{{ form.travel_days.errors.0 }}</div>

@@ -27,17 +27,19 @@ def env_list(name, default=""):
 # Core / Security
 # ---------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-CHANGE-ME-IN-PRODUCTION")
-DEBUG = env_bool("DJANGO_DEBUG", default=False)
+DEBUG = env_bool("DJANGO_DEBUG", default=True)
 ALLOWED_HOSTS = [
     "dreamstours.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
     "www.dreamstoursandtravel.in",
+    ".koyeb.app",
 ]
 
 SITE_URL = os.environ.get("SITE_URL", "https://www.dreamstoursandtravel.in")
 
 INSTALLED_APPS = [
+    "django_extensions",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -85,11 +87,13 @@ WSGI_APPLICATION = "dreams_tours.wsgi.application"
 # ---------------------------------------------------------------------------
 # Database — SQLite for dev, override with DATABASE_URL (e.g. Postgres) in prod
 # ---------------------------------------------------------------------------
+import dj_database_url
+import os
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    "default": dj_database_url.parse(
+         os.environ.get("DATABASE_URL")
+    )
 }
 
 try:
@@ -149,7 +153,7 @@ CSRF_COOKIE_SAMESITE = "Lax"
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+    SECURE_SSL_REDIRECT = env_bool("DJANGO_SECURE_SSL_REDIRECT", default=False)
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True

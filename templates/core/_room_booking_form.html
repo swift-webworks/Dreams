@@ -1,0 +1,70 @@
+{% load static %}
+<div class="dt-contact-card">
+  {% if messages %}
+    {% for message in messages %}
+    {% if 'room' in message.tags %}
+    <div class="alert {% if 'success' in message.tags %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+      {{ message }}
+    </div>
+    {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  <form method="post" action="{% url 'core:room_booking' %}" novalidate aria-label="Room booking form">
+    {% csrf_token %}
+    {{ room_booking_form.website }}
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.name.id_for_label }}">Name</label>
+        {{ room_booking_form.name }}
+        {% if room_booking_form.name.errors %}<div class="text-danger small mt-1">{{ room_booking_form.name.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.phone.id_for_label }}">Phone</label>
+        {{ room_booking_form.phone }}
+        {% if room_booking_form.phone.errors %}<div class="text-danger small mt-1">{{ room_booking_form.phone.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.email.id_for_label }}">Email (optional)</label>
+        {{ room_booking_form.email }}
+        {% if room_booking_form.email.errors %}<div class="text-danger small mt-1">{{ room_booking_form.email.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.location.id_for_label }}">Preferred Stay Location</label>
+        {{ room_booking_form.location }}
+        {% if room_booking_form.location.errors %}<div class="text-danger small mt-1">{{ room_booking_form.location.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.check_in_date.id_for_label }}">Check-in Date</label>
+        {{ room_booking_form.check_in_date }}
+        {% if room_booking_form.check_in_date.errors %}<div class="text-danger small mt-1">{{ room_booking_form.check_in_date.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="{{ room_booking_form.check_out_date.id_for_label }}">Check-out Date</label>
+        {{ room_booking_form.check_out_date }}
+        {% if room_booking_form.check_out_date.errors %}<div class="text-danger small mt-1">{{ room_booking_form.check_out_date.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="{{ room_booking_form.room_type.id_for_label }}">Room Type</label>
+        {{ room_booking_form.room_type }}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="{{ room_booking_form.number_of_rooms.id_for_label }}">Number of Rooms</label>
+        {{ room_booking_form.number_of_rooms }}
+        {% if room_booking_form.number_of_rooms.errors %}<div class="text-danger small mt-1">{{ room_booking_form.number_of_rooms.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-md-4">
+        <label class="form-label" for="{{ room_booking_form.number_of_guests.id_for_label }}">Number of Guests</label>
+        {{ room_booking_form.number_of_guests }}
+        {% if room_booking_form.number_of_guests.errors %}<div class="text-danger small mt-1">{{ room_booking_form.number_of_guests.errors.0 }}</div>{% endif %}
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="{{ room_booking_form.special_requests.id_for_label }}">Special Requests (optional)</label>
+        {{ room_booking_form.special_requests }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn dt-btn-primary btn-lg w-100 mt-4">Submit Room Booking</button>
+  </form>
+</div>

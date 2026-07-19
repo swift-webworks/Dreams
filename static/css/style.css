@@ -381,6 +381,10 @@ body.home-hero-entrance .dt-scroll-indicator:not(.dt-revealed) {
 .form-control:focus, .form-select:focus {
   border-color: var(--dt-primary); box-shadow: 0 0 0 4px rgba(72,98,79,0.12);
 }
+input[type="date"].form-control::-webkit-calendar-picker-indicator {
+  filter: invert(29%) sepia(11%) saturate(1206%) hue-rotate(83deg) brightness(93%) contrast(87%);
+  cursor: pointer;
+}
 .form-label { font-weight: 600; font-size: 0.9rem; color: var(--dt-primary-dark); margin-bottom: 0.4rem; }
 
 .dt-contact-links a {

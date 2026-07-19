@@ -5,8 +5,8 @@ from django.core.cache import cache
 from django.conf import settings
 from django.http import HttpResponse
 
-from .models import Vehicle, Destination, Story, Memory, ClientReview, BlogCategory, BlogPost, Service
-from .forms import ContactForm
+from .models import Vehicle, Destination, Story, Memory, ClientReview, BlogCategory, BlogPost, Service, RoomBooking
+from .forms import ContactForm, RoomBookingForm
 
 
 def get_client_ip(request):
@@ -108,12 +108,11 @@ def story(request):
 @require_http_methods(["GET", "POST"])
 def contact(request):
     if request.method == "POST":
-        # Basic rate limiting per IP — max 5 submissions per hour
         ip = get_client_ip(request)
         cache_key = f"contact_rate_{ip}"
         submissions = cache.get(cache_key, 0)
         if submissions >= 5:
-            messages.error(request, "Too many submissions. Please try again later or contact us via WhatsApp.")
+            messages.error(request, "Too many submissions. Please try again later or contact us via WhatsApp.", extra_tags="trip")
             return redirect("core:contact")
 
         form = ContactForm(request.POST)
@@ -122,10 +121,10 @@ def contact(request):
             submission.ip_address = ip
             submission.save()
             cache.set(cache_key, submissions + 1, timeout=3600)
-            messages.success(request, "Thank you! We'll contact you shortly on WhatsApp/Call.")
+            messages.success(request, "Thank you! We'll contact you shortly on WhatsApp/Call.", extra_tags="trip")
             return redirect("core:contact")
         else:
-            messages.error(request, "Please correct the errors below.")
+            messages.error(request, "Please correct the errors below.", extra_tags="trip")
     else:
         form = ContactForm()
 
@@ -135,8 +134,40 @@ def contact(request):
                              "fill our enquiry form to plan your next journey.",
         "canonical_path": "/contact/",
         "contact_form": form,
+        "room_booking_form": RoomBookingForm(),
     }
     return render(request, "core/contact.html", context)
+
+
+@require_http_methods(["GET", "POST"])
+def room_booking(request):
+    if request.method == "POST":
+        ip = get_client_ip(request)
+        cache_key = f"room_booking_rate_{ip}"
+        submissions = cache.get(cache_key, 0)
+        if submissions >= 5:
+            messages.error(request, "Too many submissions. Try WhatsApp instead.", extra_tags="room")
+            return redirect("core:contact")
+        form = RoomBookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.ip_address = ip
+            booking.save()
+            cache.set(cache_key, submissions + 1, timeout=3600)
+            messages.success(request, "Thank you! We'll confirm your room booking shortly.", extra_tags="room")
+            return redirect("core:contact")
+        else:
+            messages.error(request, "Please correct the errors in the room booking form.", extra_tags="room")
+    else:
+        form = RoomBookingForm()
+    context = {
+        "meta_title": "Contact Us — Plan Your Trip | Dreams Tours and Travels",
+        "canonical_path": "/contact/",
+        "contact_form": ContactForm(),
+        "room_booking_form": form,
+    }
+    return render(request, "core/contact.html", context)
+
 
 def blog_list(request):
     posts = BlogPost.objects.filter(is_published=True)

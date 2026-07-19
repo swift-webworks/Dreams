@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission, BlogCategory, BlogPost, Service
+from .models import Vehicle, Destination, Story, Memory, ClientReview, ContactSubmission, BlogCategory, BlogPost, Service,RoomBooking
 
 
 class ThumbnailMixin:
@@ -71,15 +71,23 @@ class ClientReviewAdmin(ThumbnailMixin, admin.ModelAdmin):
 
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
-    list_display = ("name", "phone", "destination", "travel_days", "members", "room_booking",
-        "location_place", "is_read", "created_at")
+    list_display = ("name", "phone", "destination", "start_date", "return_date", "travel_days", "members",
+        "room_booking", "location_place", "is_read", "created_at")
     list_editable = ("is_read",)
     list_filter = ("is_read", "created_at")
     search_fields = ("name", "phone", "destination")
-    readonly_fields = ("name", "phone", "destination", "pickup_location", "travel_days", "members", "ip_address", "created_at")
+    readonly_fields = ("name", "phone", "destination", "pickup_location", "start_date", "return_date",
+        "travel_days", "members", "room_booking", "location_place", "ip_address", "created_at")
 
     def has_add_permission(self, request):
         return False
+
+@admin.register(RoomBooking)
+class RoomBookingAdmin(admin.ModelAdmin):
+    list_display = ("name", "phone", "location", "check_in_date", "check_out_date", "room_type", "is_read", "created_at")
+    list_editable = ("is_read",)
+    readonly_fields = ("name", "phone", "email", "location", "check_in_date", "check_out_date", "room_type", "number_of_rooms", "number_of_guests", "special_requests", "ip_address", "created_at")
+    def has_add_permission(self, request): return False
 
 @admin.register(BlogCategory)
 class BlogCategoryAdmin(admin.ModelAdmin):
