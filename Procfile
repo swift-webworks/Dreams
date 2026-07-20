@@ -1,1 +1,1 @@
-web: gunicorn dreams_tours.wsgi
+web: gunicorn dreams_tours.wsgi:application
