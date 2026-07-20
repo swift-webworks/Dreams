@@ -28,13 +28,7 @@ def env_list(name, default=""):
 # ---------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-CHANGE-ME-IN-PRODUCTION")
 DEBUG = env_bool("DJANGO_DEBUG", default=True)
-ALLOWED_HOSTS = [
-    "dreamstours.pythonanywhere.com",
-    "localhost",
-    "127.0.0.1",
-    "www.dreamstoursandtravel.in",
-    ".koyeb.app",
-]
+ALLOWED_HOSTS = ["*"]
 
 SITE_URL = os.environ.get("SITE_URL", "https://www.dreamstoursandtravel.in")
 
@@ -160,7 +154,7 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "https://www.dreamstoursandtravel.in")
+CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS", "https://www.dreamstoursandtravel.in", "https://web-production-c4667.up.railway.app")
 
 # ---------------------------------------------------------------------------
 # Caching — used for basic contact-form rate limiting
