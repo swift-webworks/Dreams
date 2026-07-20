@@ -91,18 +91,19 @@ import dj_database_url
 import os
 
 DATABASES = {
-    "default": dj_database_url.parse(
-         os.environ.get("DATABASE_URL")
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
     )
 }
 
-try:
-    import dj_database_url
-    DATABASE_URL = os.environ.get("DATABASE_URL")
-    if DATABASE_URL:
-        DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-except ImportError:
-    pass
+# try:
+#     import dj_database_url
+#     DATABASE_URL = os.environ.get("DATABASE_URL")
+#     if DATABASE_URL:
+#         DATABASES["default"] = dj_database_url.parse(DATABASE_URL, conn_max_age=600)
+# except ImportError:
+#     pass
 
 # ---------------------------------------------------------------------------
 # Password validation
